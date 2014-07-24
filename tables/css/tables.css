@@ -1,0 +1,130 @@
+/*table {
+    border-collapse: collapse;  
+}*/
+td {
+    border: 1px solid #999;
+    padding: 0;
+}
+body{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font: 12px/16px Arial;
+}
+#tables-wrap{
+	width:100%;
+	height:100%;
+	position:fixed;
+}
+#tables-content{
+    display: block;
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    bottom: 0;
+    right: 0;
+    background: #ccc;
+	overflow:scroll;
+}
+.tables-yaxis-wrap{
+	display: block;
+    position: absolute;
+    left: 50px;
+    top: 100px;
+    bottom: 0;
+    width:50px;
+    background: #eee;
+	overflow:hidden;
+}
+.tables-xaxis-wrap{
+	display: block;
+    position: absolute;
+    left: 100px;
+    top: 74px;
+    /*height:24px;*/
+    right:0;
+    background: #eee;
+	overflow:hidden;
+}
+#tables-scroll-area{
+	
+}
+.tables-yaxis{ 
+	margin:0 0 32px 0;
+}
+.tables-xaxis{ /* Компенсация ширины скрола основной таблицы! */
+	margin: 0px 32px 0px 0px;
+	display: inline-block;
+}
+.table-cell-input{
+	border: none;
+    width:  80px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 14px;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+.table-cell-input:hover {
+    background-color: #eee;
+}
+.table-cell-input:focus {
+    background-color: #ccf;
+}
+.table-cell-input:not(:focus) {
+    text-align: right;
+}
+.xaxiss-cell{
+	width: 80px;
+}
+.yaxiss-cell{
+	width: 48px;
+}
+.xaxiss-cell,
+.yaxiss-cell{
+	display: block;
+	position:relative;
+	height:24px;
+	text-align: center;
+}
+.axiss-cell-label{
+	display: block;
+	overflow:hidden;
+	font-size: 14px;
+	line-height: 14px;
+	padding: 5px 0;
+}
+.main-table td{
+
+}
+.xaxis-resize,
+.yaxis-resize{
+	display: block;
+	position: absolute;
+	z-index:10;
+}
+.xaxis-resize{
+	width: 8px;
+	height: 100%;
+	right: -4px;
+	top: 0;
+	cursor:col-resize;
+}
+.yaxis-resize{
+	width:100%;
+	height:4px;
+	position: absolute;
+	left: 0;
+	bottom: -2px;
+	cursor:row-resize;
+}
+.tables_head-panel{
+	position: absolute;
+	left: 100px;
+	top: 20px;
+	font-size: 21px;
+	line-height: 24px;
+}
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<script src="arifmethic2.js"></script>
+</head>
+<body>
+<script>
+
+var examples= [
+	
+	{
+		name:'t1' ,
+		expr:'min(3,10)',
+		res:3
+	},
+	{
+		name:'t2' ,
+		expr:'-10',
+		res:-10
+	},
+	{
+		name:'t3' ,
+		expr:'12',
+		res:12
+	},
+	{
+		name:'t4' ,
+		expr:'1+2',
+		res:3
+	},
+	{
+		name:'t5' ,
+		expr:'2*3',
+		res:6
+	},
+	{
+		name:'t6' ,
+		expr:'1+2 -3 +4',
+		res:4
+	},
+	{
+		name:'t7' ,
+		expr:'2+3*5-23*2.5',
+		res:-40.5
+	},
+	{
+		name:'t8' ,
+		expr:'13 + (5 - (12+2)^2)',
+		res:-178 // 13 + (5 - Math.pow(12+2,2))
+	},
+	{
+		name:'t9' ,
+		expr:'pi',
+		res:Math.PI
+	},
+	{
+		name:'t10' ,
+		expr:'2*pi',
+		res:2*Math.PI
+	},
+	{
+		name:'t11' ,
+		expr:"'abc'",
+		res:"abc"
+	},
+	{
+		name:'t12' ,
+		expr:"'Hello' + ' '+ 'World!'",
+		res:"Hello World!"
+	},
+	{
+		name:'t13' ,
+		expr:"2+x",
+		res:2
+	},
+	{
+		name:'t14' ,
+		expr:"2*x + (12 +y * (x+2))*3 ",
+		variables:{x: -2, y:3},
+		res: 2*(-2) + (12 +3 * ((-2)+2))*3 
+	},
+	
+];
+// Arifmethic2Cursor
+examples.forEach(function(test){
+	var aCur = new Arifmethic2Cursor(test.expr);
+	if(test.variables){
+		aCur.setVariables(test.variables);
+	}
+	var res = aCur.expression();
+	console.log("\t\t[%s]: %s, success:%s",test.name,res, test.res == res);
+	
+});
+
+</script>
+</body>
+</html>

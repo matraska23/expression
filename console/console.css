@@ -1,0 +1,140 @@
+﻿body{
+	font: 13px/15px Arial;
+	margin:0;
+	height:100%;
+	background: #eee;
+}
+html{
+	height:100%;
+}
+.devcon_wrap{
+	position: relative;
+	height: 100%;
+}
+#devcon-wrap{
+	width: 98%;
+	height: 100%;
+	margin: 0 auto;
+}
+#devcon-tab{
+	border-collapse: collapse;
+	width:100%;
+	height:100%;
+}
+#devcon-tab .devcon-tab-ribbon-cell{
+	min-height: 0;
+	max-height: 100%;
+	height:100%;
+}
+#devcon-tab td{
+	vertical-align:top;
+	padding:0;
+}
+.devcon-text-box{
+	width:100%;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	resize:vertical;
+	min-height:200px;
+	border: 1px solid #aaa;
+	padding: 8px;
+}
+.scroll-wrap{
+	overflow-y:scroll; /* Need in Firefox*/
+	position:relative;
+	height: 100%;
+}
+.scroll-node{
+	position:absolute;
+	width: 100%;
+	background-color: #ddd;
+}
+.expr-row{
+	margin:12px 0;
+}
+.output-container{
+	margin: 0 0 0 20px;
+}
+.output-c1{ color: green;}
+.output-c2{ color: blue;}
+.devcon-btn{
+	display: inline-block;
+	border: 1px solid #aaa;
+	padding: 5px 12px;
+	background: #fff;
+	font-weight: bold;
+	cursor: pointer;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+.devcon-btn:hover{
+	background-color: #eee;
+}
+.devcon-btn:active{
+	background-color: #ccc;
+}
+.devcon_center-help{
+	display: inline-block;
+	vertical-align: middle;
+}
+.devcon_hotkey_label{
+	font-size: 13px;
+	line-height: 15px;
+	font-style: italic;
+}
+.devcon_btn-wrap{
+	margin: 0 0 5px 0;
+}
+.devcon_help-btn{
+	float: right;
+}
+.devcon_help_wrap{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .7);
+	padding: 20px 60px 20px 20px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.devcon_help_container{
+	overflow-y: scroll;
+	height: 100%;
+	width: 100%;
+	background-color: #fff;
+	color: #333;
+}
+.devcon_icn_close{
+	width: 16px;
+	height: 16px;
+	background: url(icn-close.png) 0 0 no-repeat;
+	cursor: pointer;
+	position: absolute;
+	top: 20px;
+	right: 22px;
+	opacity: 0.8;
+}
+.devcon_icn_close:hover{
+	opacity: 1;
+}
+.devcon_help_container_inner{
+	padding: 5px;
+}
+.devcon-liter1{
+	font-size: 13px;
+	line-height: 18px;
+	margin: 0;
+}
+.devcon_code{
+	color: #0244b7;
+}
+.devcon_code::before,
+.devcon_code::after{
+	content: "`";
+	display: inline-block;
+}

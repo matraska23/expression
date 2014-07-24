@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<script src="expression.js"></script>
+</head>
+<body>
+<script>
+var fib = function(n){ return n==1 || n==2 ? 1: fib(n-1) + fib(n-2);}
+var fact = function(n){ return n * (n > 1 ? fact(n-1) : 1); }
+var examples= [
+	
+	{
+		name:'t1' ,
+		expr:'min(3,10)',
+		res:3
+	},
+	{
+		name:'t2' ,
+		expr:'-10',
+		res:-10
+	},
+	{
+		name:'t3' ,
+		expr:'12',
+		res:12
+	},
+	{
+		name:'t4' ,
+		expr:'1+2',
+		res:3
+	},
+	{
+		name:'t5' ,
+		expr:'2*3',
+		res:6
+	},
+	{
+		name:'t6' ,
+		expr:'1+2 -3 +4',
+		res:4
+	},
+	{
+		name:'t7' ,
+		expr:'2+3*5-23*2.5',
+		res:-40.5
+	},
+	{
+		name:'t8' ,
+		expr:'13 + (5 - (12+2)^2)',
+		res:-178 // 13 + (5 - Math.pow(12+2,2))
+	},
+	{
+		name:'t9' ,
+		expr:'pi',
+		res:Math.PI
+	},
+	{
+		name:'t10' ,
+		expr:'2*pi',
+		res:2*Math.PI
+	},
+	{
+		name:'t11' ,
+		expr:"'abc'",
+		res:"abc"
+	},
+	{
+		name:'t12' ,
+		expr:"'Hello' + ' '+ 'World!'",
+		res:"Hello World!"
+	},
+	/*{
+		name:'t13' ,
+		expr:"2+x",
+		res:2
+	},*/
+	{
+		name:'t14' ,
+		expr:"2*x + (12 +y * (x+2))*3 ",
+		variables:{x: -2, y:3},
+		res: 2*(-2) + (12 +3 * ((-2)+2))*3 
+	},
+	{
+		name:'t15' ,
+		expr:"length('abc123')",
+		res: 6
+	},
+	{
+		name:'t16' ,
+		expr:"2*-3",
+		res: -6
+	},
+	{
+		name:'t17' ,
+		expr:"2*(-3) + 9",
+		res: 3
+	},
+	{
+		name:'t18' ,
+		expr:"2*(-3-8) + 13",
+		res: -9
+	},
+	{
+		name:'t19' ,
+		expr:"12==12",
+		res: true
+	},
+	{
+		name:'t20' ,
+		expr:"0>-1",
+		res: true
+	},
+	{
+		name:'t21' ,
+		expr:"0||2",
+		res: 2
+	},
+	{
+		name:'t22' ,
+		expr:"0||2+1",
+		res: 3
+	},
+	{
+		name:'t23' ,
+		expr:"(0||-2)+1",
+		res: -1
+	},
+	{
+		name:'t24' ,
+		expr:"max(10,abs( - 10))+20",
+		res: 30
+	},
+	{
+		name:'t25' ,
+		expr:"(  ( - 3 ))",
+		res: -3
+	},
+	{
+		name:'trouble-t27' ,
+		variables:{x: -2, y:3},
+		expr:"(x<y ? {z|-12+-z}(x) : {z|13*z}(y))",
+		res: -10
+	},
+	{
+		name:'trouble-t28' ,
+		variables:{x: -2, y:3},
+		expr:"(x<y ? {a|a+1} : {a|a-1})(8,5)+12",
+		res: 21
+	},
+	{
+		name:'trouble-t28-1' ,
+		variables:{x: 4, y:3},
+		expr:"(x<y ? {a|a+1} : {a|a-1})(8)+12",
+		res: 19
+	},
+	{
+		name:'trouble-t29' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"{a|a +x+y+z}(13) + {b|b^2}(x)",
+		res: 23
+	},
+	{
+		name:'t30' ,
+		expr:"1+3*(1+2)+max(-1,1)",
+		res: 11
+	},
+	
+	{
+		name:'t32' ,
+		variables:{x: -2},
+		expr:"3+-x +8",
+		res: 13
+	},
+	{
+		name:'t33' ,
+		variables:{x: -2},
+		expr:"3*-(1-x) +8",
+		res: -1
+	},
+	{
+		name:'t34' ,
+		variables:{x: -2, y:2},
+		expr:"(x>y?1:-1)",
+		res: -1
+	},{
+		name:'t35' ,
+		variables:{x: -2, y:2},
+		expr:"(x>y?1:-1)+(12)",
+		res: 11
+	},
+	{ // Tests for correction detect wrong expressions
+		name:'errortest-t1' ,
+		expr:"max(10,",
+		res: NaN
+	},{
+		name:'errortest-t2' ,
+		expr:"max(10)",
+		res: NaN
+	},{
+		name:'errortest-t3' ,
+		expr:"max()",
+		res: NaN
+	},{
+		name:'errortest-t4' ,
+		expr:"10/0",
+		res: Infinity
+	},{
+		name:'errortest-t5' ,
+		expr:"max",
+		res: undefined
+	},{
+		name:'errortest-t6' ,
+		expr:"*-()",
+		res: undefined
+	},
+
+	{
+		name:'errortest-t7' ,
+		expr:"10+",
+		res: undefined
+	},{
+		name:'errortest-t8' ,
+		expr:"12(^^2)",
+		res: undefined
+	},{
+		name:'errortest-t9' ,
+		expr:"!@",
+		res: undefined
+	},{
+		name:'errortest-t10' ,
+		expr:"2+^3",
+		res: undefined
+	},{
+		name:'errortest-t11' ,
+		expr:"+2+(3+",
+		res: undefined
+	},{
+		name:'errortest-t12' ,
+		expr:"{|12+1",
+		res: undefined
+	},{
+		name:'errortest-t13' ,
+		expr:"{12+1}",
+		res: '$0'
+	},{
+		name:'errortest-t14' ,
+		expr:"0||*2",
+		res: undefined
+	},{
+		name:'errortest-t15' ,
+		expr:"0||(",
+		res: undefined
+	},{
+		name:'errortest-t16' ,
+		expr:"0|(",
+		res: undefined
+	},{
+		name:'errortest-t17' ,
+		expr:"0=12",
+		res: undefined
+	},{
+		name:'errortest-t18' ,
+		expr:" {|x+10}(1)(2)",
+		res: undefined
+	},{
+		name:'errortest-t28-2' ,
+		variables:{x: 4, y:3},
+		expr:"(x<y?{a|a+1}:{a|a-1})(8)(-1)+12",
+		res: NaN 
+	},{
+		name:'errortest-t31' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"2^^^4",
+		res: NaN
+	},
+	{
+		name:'errortest-t31-1' ,
+		variables:{x: -2, y:3, z:5},
+		//expr:"1+3*(1+2)+(3)-1)+z+1",
+		expr:"2^(4",
+		res: NaN
+	},
+	{
+		name:'errortest-t32' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"12+ (12+3}",
+
+		res: NaN
+	},
+	{
+		name:'errortest-t33' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"(x<3?1:x + 2",
+		// результат будет корректен, потму что чем хакрывается не проверяется: if(x<3,1,_
+		res: 1
+	},
+	{
+		name:'errortest-t33-2' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"(z<3?1:z}+2",
+		//if(z<3,_,z
+		res: 5
+	},
+	{
+		name:'errortest-t33-3' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"(z<3?1:z}+2)+8",
+		//if(z<3,_,z) +8
+		res: 13
+	},
+	{
+		name:'errortest-t34' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"{x|12+3)+12", // просто будет распарсена lamda(которая и не вызывется ни когда и будет не корректной), хотя выражение и не верно
+		res: '$0' 
+	},
+	{
+		name:'errortest-t35' ,
+		variables:{x: -2, y:3, z:5},
+		expr:"{}(2)", 
+		res: undefined 
+	},
+
+	{
+		name: 'functions-t33',
+		expr: '{x|12+2}(2)',
+		res: 14
+	},
+	{
+		name: 'functions-t33-2',
+		expr: '{x,b,c|12+x+b+c}(2,3,4)',
+		res: 21
+	},{
+		name: 'functions-t34',
+		expr: '{|12+2}()',
+		res: 14
+	},{
+		name: 'functions-t35',
+		expr: '{12+2}()', // must executed without `|` or catch exception or do something with empty lamda! <) THat have been parsed
+		res: 14
+	},{
+		name: 'functions-t36',
+		expr: '{|0}()',
+		res: 0
+	},{
+		name: 'booltest-t37',
+		expr: '(1==1)&&(12+2)',
+		res: 14
+	},{
+		name: 'booltest-t38',
+		expr: '(1==1)&&({x|x+2}(-2))',
+		res: 0
+	},{
+		name: 'booltest-t39',
+		expr: '1&& 0',
+		res: 0
+	},{
+		name: 'booltest-t42',
+		variables:{x: -2, y:3, z:5},
+		expr: '(x>3)&& (x< -2)',
+		res: -2 >3 && -2 <-2
+	},{
+		name: 'booltest-t43',
+		variables:{x: 3, y:3, z:5},
+		expr: '(x>1 )&& (x< 4)',
+		res:  3 > 1 && 3< 4
+	},{
+		name: 'booltest-t42-2',
+		variables:{x: -2, y:3, z:5},
+		expr: 'x>3 && x< -2',
+		res: -2 >3 && -2 <-2
+	},{
+		name: 'booltest-t43-2',
+		variables:{x: 3, y:3, z:5},
+		expr: 'x>1 && x< 4',
+		res:  3 > 1 && 3< 4
+	},
+	
+	{
+		name: 'booltest-t44',
+		variables:{x: -2, y:3, z:5},
+		expr: '(x< -2) && (x<-2)',
+		res: -2 <-2 && -2< -2
+	},
+	{
+		name: 'booltest-t44-1',
+		variables:{x: -2, y:3, z:5},
+		expr: '(x< -2) && (x+1)',
+		res: -2 <-2 && (-2+1)
+	},
+	
+	{
+		name: 'booltest-t44-2',
+		variables:{x: -2, y:3, z:5},
+		expr: 'x< -2 && x<-2',
+		res: -2 <-2 && -2< -2
+	},
+	{
+		name: 'booltest-t44-3',
+		variables:{x: -2, y:3, z:5},
+		expr: 'x< -2 && x+1',
+		res: -2 <-2 && (-2+1)
+	},
+	{
+		name: 'booltest-t44-4',
+		variables:{x: 0},
+		expr: 'x > -10 && x < 10',
+		res: 0>-10 && 0<10
+	},
+		
+	{
+		name: 'booltest-t45',
+		variables:{x: -2, y:3, z:5},
+		expr: '(x*-3 ) + ( x*-3)',
+		res: 12
+	},{
+		name: 'booltest-t46',
+		variables:{x: 2, y:3, z:5},
+		expr: 'x+x',
+		res: 4
+	},{
+		name: 'booltest-t40',
+		expr: '(1==1 && {x|5+x})(3)',
+		res: 8
+	},{
+		name: 'exectest-t41',
+		expr: '(max)(10,-2)+3',
+		res: 13
+	},{
+		name: 'exectest-t42',
+		expr: '2+(max)(10,20) +3 ',
+		res: 25
+	},{
+		name: 'eval-t43',
+		expr: '@abc+"123"',
+		res: 'abc123'
+	},
+	{
+		name: 'callexec-t44',
+		expr: 'max(10,call(2,20))',
+		res: 20
+
+	},{
+		name: 'callexec-t45',
+		variables:{b:7},
+		expr: '{n|(n<3 ? 1 : call(n-1) + call(n-2))}(b)',
+		res: fib(7)
+	},{
+		name: 'callexec-t47',
+		expr: '{n|(n<3 ? 1 : n+1)}(5) +$0(3)',
+		res: 10
+	},{
+		name: 'callexec-t48',
+		expr: '{n|(n<3 ? 1 : call(n-1))}(5)',
+		res: 1
+	},{
+		name: 'errortest-t48-2', // Crash browser!
+		variables:{n: 2},
+		expr: '(n<3 ? 1 : n}',
+		res: 1
+	},{
+		name: 'callexec-t46',
+		expr: '{n|(n==1||n==2 ? 1 : n}(2)',
+		res: 1
+	},
+	{
+		name: '3booltest-t47',
+		variables:{x: 1},
+		expr: 'x==1||x==2',
+		res: true
+	},{
+		name: '3booltest-t48',
+		variables:{x: 2},
+		expr: 'x==1||x==2',
+		res: true
+	},{
+		name: '3booltest-t48',
+		variables:{x: 3},
+		expr: 'x==1||x==2',
+		res: false
+	},{
+		name: 'callexec-t49',
+		expr: '{n|(n<3 ? 1 : n-1)}(5) + $0(4) +$0(3) + $0(2)',
+		res: 10
+	},
+	{
+		name: 'callexec-t50',
+		expr: '{n|n+1}(5)+{z|z+$0(5)}(5)',
+		res: 17
+	},
+	{
+		name: 'callexec-t50',
+		expr: '{n|(n<3 ? 1 : n+1)}(5)+{z|z+$0(5)}(5)',
+		res: 17
+	},
+	{
+		name: 'callexec-t51',
+		variables:{z: 32},
+		expr: '{x|{y|x+y}}(1)(2)+8',
+		res: 11
+	},
+	
+	{
+		name: 'lazy-params-t1',
+		expr: 'func(1,2,3)',
+		res: 0
+	},
+	{
+		name: 'lazy-params-t2',
+		expr: 'func(1)',
+		res: 0
+	},
+	{
+		name: 'lazy-params-t3',
+		expr: 'func()',
+		res: 0
+	},
+	{
+		name: 'lazy-params-t4',
+		expr: 'func((2+3)+(3))',
+		res: 0
+	},
+	{
+		name: 'lazy-params-t5',
+		expr: 'func((2+3)+(3),func(2,3))',
+		res: 0
+	},
+	{
+		name: 'lazy-params-t6',
+		expr: '(3<5 ? (2^3)+4 : 56)',
+		res: 12
+	},
+	{
+		name: 'lazy-params-t7',
+		expr: '(8<5 ? (2^3)+4 : (5+6)*-2+4*(4+3))',
+		res: (5+6)*-2+4*(4+3)
+	},{
+		name: 'ternar-t1',
+		expr: '12<3 ? 2 : 3',
+		res: 3
+	},{
+		name: 'ternar-t1-2',
+		expr: '12<3 ? 2+(12*3)-((3+8)) : 3',
+		res: 3
+	},{
+		name: 'ternar-t2',
+		expr: '(12<3 ? 2 : 3)+5 ',
+		res: 8
+	},{
+		name: 'ternar-t3',
+		expr: '(12>3 ? 2 : 3)+5 ',
+		res: 7
+	},{
+		name: 'ternar-t4',
+		expr: '(12 ? 2 : 3)+5 ',
+		res: 7
+	},{
+		name: 'ternar-t5',
+		expr: '(12>4 ? 2 : 3)+ (18<3?0:6) ',
+		res: 8
+	},{
+		name: 'ternar-t6',
+		expr: '(12>4 ? (18<3?0:6) : 3)',
+		res: 6
+	},{
+		name: 'ternar-t7',
+		expr: '(12>4 ? (18<3?min(10,0):max(10,0)) : 3)',
+		res: 10
+	},{
+		name: 'ternar-t8',
+		expr: '(12>4 ? min : max)(13,17)',
+		res: 13
+	},{
+		name: 'ternar-t9', // Пример на расчет чисел фибоначи через рекурсию
+		variables:{b:7},
+		expr: '{n | n<3 ? 1 : call(n-1) + call(n-2)}(b)',
+		res: fib(7)
+	},{
+		name: 'error-in-lamda-1', 
+		variables:{b:7},
+		expr: '{n | n+++3}(b)',
+		res: 10
+	},{
+		name: 'error-in-lamda-2', 
+		variables:{b:7},
+		expr: '{n | n+++3(b)',
+		res: NaN
+	},{
+		name: 'error-in-lamda-3', 
+		variables:{b:7},
+		expr: '{n | n+(3}(b)',
+		res: NaN
+	},{
+		name: 'factorial-1', 
+		variables:{b:7},
+		expr: '{n|n * (n > 1 ? call(n-1) : 1)}(b)',
+		res: fact(7)
+	},{
+		name: 'customFunction-1', 
+		variables:{b:7},
+		expr: '12 + summ(-13,18)',
+		res: 17
+	},{
+		name: 'emptystring-1', 
+		expr: '12+""',
+		res: '12'
+	},{
+		name: 'brackets-opt-1', 
+		expr: '13 + $ -12 + 6 + min $ 10, 12 ',
+		res: 17
+	},{
+		name: 'brackets-opt-2', 
+		expr: '{x | 133 + $ x -18 + min $ 12,3 }(12)',
+		res: 130
+	},{
+		name: 'brackets-opt-3', 
+		expr: 'length("$asss")',
+		res: 5
+	},{
+		name: 'brackets-opt-4', 
+		expr: 'length(\'$asss\')',
+		res: 5
+	},{
+		name: 'func-comb-1', 
+		expr: 'abs#max(-10,-22)',
+		res: 10
+	}
+	
+	
+	
+];
+
+
+
+var isEqual = function(left, right){
+	/*if(isNaN(left)){
+		return isNaN(right);
+	}else if(isFinite(left)){
+		return left==right;
+	}else{
+		return !isFinite(right);
+	}*/
+	return isNaN(left)?isNaN(right):isFinite(left)?left==right:!isFinite(right);
+	
+}
+
+
+var runTestCallback = function(test){
+	var aCur = new Arifmethic3Cursor(test.expr);
+	window.test = aCur;
+	var prepareRes = aCur.prepare(test.expr);
+	var res;
+	//-------------
+	aCur.customFunctions['summ'] = function(args){
+		return args[0] + args[1];
+	};
+	//--------------
+	if(prepareRes){
+		if(test.variables){
+			aCur.setVariables(test.variables);
+		}
+		console.log('Parsed `%s`',test.expr);
+		console.dir(aCur.parts);
+		res = aCur.condit();//aCur.expression();
+	}else{
+		console.log("\t[%s], Prepare failed",test.name);
+		console.log('Parsed `%s`',test.expr);
+		console.dir(aCur.warningStack);
+		res = NaN;
+	}
+	var success = isEqual(test.res, res);
+	console.log("\t\t[%s]: %s, success:%s",test.name,res, success);
+	if(aCur.warningStack.length){
+		console.log("WARNINGS: evaluation failed");
+		console.dir(aCur.warningStack);
+	}
+	
+	if(aCur.pos !=aCur.len){
+		console.log("\tExecution uncorrect! p: %s, len : %s", aCur.pos, aCur.len);
+	}
+}
+var runAllTests = function(){
+	console.time("time for Test");
+	examples.forEach(runTestCallback);
+	console.timeEnd("time for Test");
+};
+
+var runSingleTest = function(testId){
+	console.time("time for single test");
+	examples.filter(function(test){ return test.name == testId;}).forEach(runTestCallback);
+	console.timeEnd("time for single test");
+};
+
+var runTests = function(prefix){
+	examples.forEach(function(test){
+		if(test.name && !test.name.indexOf(prefix)){
+			runTestCallback(test);
+		}
+	});
+
+}
+
+
+var expressionTest = function(testObj){
+	var 	engine = new Expression();
+	
+	// Add Array support
+	engine.addFunction('array', function(args){
+		return args;
+	});
+	
+	if(testObj.funcName && testObj.funcCb){
+		engine.addFunction(testObj.funcName, testObj.funcCb);
+	}
+	
+	var 	evalRes = engine.evaluate(testObj.expression);
+	
+	console.log('\tevalRes');
+	console.dir(evalRes);
+};
+
+//=========================================================================
+if(false){
+	expressionTest({
+		expression: 'custom(12)',
+		funcName: 'custom',
+		funcCb: function(args){
+			console.log('ARG');
+			console.dir(args);
+			return args[0];
+		}
+	});
+
+	// Test of lamda as argument of custom Function
+	expressionTest({
+		expression: 'custom({x, y| x^2 + y})',
+		funcName: 'custom',
+		funcCb:  function(args){
+	//		console.log('ARG');
+	//		console.dir(args);
+	//		console.dir(this);
+			
+			// methodExecution : function(fname, args, clojure)
+			var 	lamdaName = args[0],
+					res,
+					lamdaClojure = {},
+					lamdaArgs = [4, 3]; // В порядке перечисления
+					
+			if(lamdaName[0] == '$'){
+				res = this.methodExecution(lamdaName, lamdaArgs, lamdaClojure);
+			}
+			
+			return res;
+		}
+	});
+
+	// Array 
+	expressionTest({
+		expression: 'array(1,2,3,4,5,6)',
+		funcName: 'array',
+		funcCb: function(args){
+			return args;
+		}
+	});
+
+	// Array summ
+	expressionTest({
+		expression: 'summ(array(1, 2, 3, 4))',
+		funcName: 'summ',
+		funcCb: function(args){
+			var 	summ = 0,
+					array = args[0];
+					
+			if(Array.isArray(array)){
+				args[0].forEach(function(item){
+					summ += item;
+				});
+			}else{
+				summ = undefined;
+			}
+			
+			return summ;
+		}
+	});
+
+	console.log('Test Array map');
+	// Array map
+	expressionTest({
+		// expression: 'map(array(1, 2, 3, 4), {x| x^2})',
+		expression: 'map(array(1, 2, 3, 4), sin)',
+		funcName: 'map',
+		funcCb: function(args){
+			var 	array = args[0],
+					lamdaName = args[1],
+					res = [],
+					lamdaClojure = {}, // custom clojure also supported!
+					buf;
+					
+			if(Array.isArray(array) && this.isExecutable(lamdaName)){
+				array.forEach(function(item){
+					buf = this.methodExecution(lamdaName, [item], lamdaClojure);
+					res.push(buf);
+				}.bind(this));
+			}else{
+				res = undefined;
+			}
+			
+			return res;
+		}
+	});
+}
+//runAllTests();
+
+//runSingleTest('trouble-t28');
+//runSingleTest('functions-t35');
+/*runSingleTest('booltest-t37');
+runSingleTest('booltest-t38');
+runSingleTest('booltest-t39');
+runSingleTest('booltest-t40');*/
+
+/*runSingleTest('exectest-t41');
+runSingleTest('exectest-t42');
+runSingleTest('eval-t43');*/
+//runSingleTest('callexec-t44');
+
+// Trouble:
+//runSingleTest('callexec-t48');
+
+//runSingleTest('callexec-t45');
+
+//runSingleTest('brackets-opt-1');
+//runSingleTest('brackets-opt-2');
+//runSingleTest('brackets-opt-3');
+//runSingleTest('brackets-opt-4');
+
+runSingleTest('func-comb-1');
+
+
+
+/*
+runSingleTest('t21');
+runSingleTest('t20');
+runSingleTest('t19');
+*/
+
+/*
+runSingleTest('t19');
+runSingleTest('errortest-t28-2');
+runSingleTest('errortest-t33');
+runSingleTest('errortest-t33-2');
+runSingleTest('errortest-t33-3');
+runSingleTest('callexec-t45');
+runSingleTest('callexec-t47');
+runSingleTest('callexec-t48');
+runSingleTest('errortest-t48-2');
+runSingleTest('callexec-t46');
+runSingleTest('callexec-t49');
+runSingleTest('callexec-t50');
+runSingleTest('lazy-params-t6');
+runSingleTest('lazy-params-t7');
+runSingleTest('trouble-t27');
+runSingleTest('trouble-t28');
+runSingleTest('trouble-t28-1');
+runSingleTest('t34');
+runSingleTest('t35');
+*/
+
+
+//runSingleTest('3booltest-t47');
+//runSingleTest('customFunction-1');
+
+//runSingleTest('callexec-t46');
+//runSingleTest('callexec-t51');
+
+
+
+
+//runTests('3booltest-');
+
+//runTests('errortest-');
+//runSingleTest('errortest-t32');
+// runSingleTest('errortest-t33');
+// runSingleTest('errortest-t33-2');
+// runSingleTest('errortest-t33-3');
+
+//runSingleTest('booltest-t42');
+//runSingleTest('booltest-t43');
+
+//runSingleTest('booltest-t44');
+//runTests('booltest-t44');
+//runTests('factorial-1');
+//runTests('error-in-lamda-1');
+//runTests('error-in-lamda-');
+// runSingleTest('booltest-t45');
+// runSingleTest('booltest-t46');
+
+
+//runSingleTest('errortest-t34');
+//runSingleTest('errortest-t35');
+
+//runTests('trouble-');
+//runTests('functions-');
+//runTests('lazy-params-');
+//runTests('callexec-');
+
+
+//runSingleTest('ternar-t1-2');
+//runSingleTest('emptystring-1');
+//runTests('ternar-');
+
+
+</script>
+</body>
+</html>

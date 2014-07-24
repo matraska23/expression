@@ -1,0 +1,198 @@
+﻿/* Malceff helpers classes v13 14/12/2013 */
+a img{
+	border:none;
+}
+table{
+	border-collapse:collapse;
+	border-spacing:0;
+}
+img { border: 0; max-width: 100%; }  
+/* Center class */
+.Center,
+.ta-c{
+	text-align:center;
+}
+img.Center{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+}
+table.Center{
+	margin: 0 auto;
+}
+.ta-j{text-align: justify;}
+.d-b{display:block;}
+/* Upper is depricated */
+.CenterBlock{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+}
+/* Stretch class */
+img.Stretch{
+  max-width:100%;
+  height:auto;
+}
+/* Grid class: */
+.Grid{width:100%;}
+.Grid>.Row{
+	width:100%;
+	padding:0;
+	margin: 0;
+}
+.Grid>.Row>.Cell{
+	display: inline-block;
+	vertical-align: top;
+}
+/* 3-х колоночный макет: 33% + 34% + 33% (самый широкий по середине)*/
+/* 3/2-х колоночный макет: 33% + 34% + 33% / 48% + 48% */
+.Cell_1div3{ width:32% !important; }
+.Cell_2div3{ width:66% !important; }
+.Cell_1div2{ width:49% !important; }
+.Cell_1div3.fit2left{ 	margin:0 1% 0 0 !important; }
+.Cell_1div3.fit2right{	margin:0 0 0 1% !important; }
+.Cell_1div3.fit2center{ margin:0 1% !important; } 
+.Cell_2div3.fit2left,
+.Cell_1div2.fit2left{ 	margin:0 1% 0 0 !important; }
+.Cell_2div3.fit2right,
+.Cell_1div2.fit2right{ 	margin:0 0 0 1% !important; }
+
+.w50p{ width:48% !important; }
+.w50p.fit2left{ margin:0 2% 0 0 !important; }
+.w50p.fit2right{ margin:0 0 0 2% !important; }
+/* :Grid class */
+
+.w960{
+	width:960px;
+}
+.Justify{
+	text-align:justify;
+}
+p.Right,
+input.Right{
+	text-align:right;
+}
+p.Left{
+	text-align:left;
+}
+table.Right{
+	margin: 0 0 0 auto;
+}
+.Clear{
+	clear:both;
+}
+
+.m0,
+.m3-m0{margin: 0;}
+.m12{margin:12px 0;}
+.m25{margin: 25px 0;}
+.mtop25{margin-top: 25px;}
+.m3-mt40, .mtop40{	margin-top: 40px; }
+.m3-mt80, .mtop80{	margin-top: 80px; }
+.m5{
+	margin-top:5px !important;
+	margin-bottom:5px !important;
+}
+.m3-mb25s{ margin: 0 0 25px 0 !important;}
+.m3-mb15s{ margin: 0 0 15px 0 !important;}
+.m3-mb25{ margin-bottom: 25px;}
+.m3-mb15{ margin-bottom: 15px;}
+.m3-mb10{ margin-bottom: 10px;}
+.m3-mt20{ margin-top: 20px !important;}
+.m3-r10{ margin-right: 10px;}
+
+/* List classes: */
+.Unordered-list-base{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+.Unordered-list-base.Left>li{ float:left; }
+.Unordered-list-base.Left::after,
+.Fl-r::after{
+	content:"";
+	display:block;
+	height:0;
+	clear:both;
+	visibility:hidden;
+}
+
+/* :List classes */
+.Fl-r{
+	float:right;
+}
+/* Buttons classes: */
+.Virtual-button{
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
+	cursor:pointer;
+}
+.Virtual-link{	text-decoration: none;	border-bottom: 1px dotted; cursor:pointer;}
+.Virtual-link:hover{ border-bottom-color:transparent;}
+
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; } /* IE 6/7 */
+
+
+
+/* Вертиальное выравнивание */
+.m3-vertical,
+.m3-vertical-help{display:inline-block;vertical-align:middle;}
+.m3-vertical-help{width:0;height:100%;}
+
+.m3-middle > i,
+.m3-middle > div,
+.m3-middle > img,
+.m3-middle > span,
+.m3-middle > input,
+.m3-middle > strong,
+.m3-middle > select,
+.m3-middle > textarea,
+.m3-middle::after{ display:inline-block;vertical-align:middle;}
+.m3-middle::after{ content:"";width:0;height:100%;}
+
+
+/* Unselectable */
+.m3-nonselectable{
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
+}
+
+/* Times New Roman-based serif */
+.Cambria-font{
+	font-family: Cambria, "Hoefler Text", Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;	
+}
+/* A modern Georgia-based serif */
+.Constantia-font{
+	font-family: Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, "DejaVu Serif," "Bitstream Vera Serif", "Liberation Serif", Georgia, serif;
+}
+/*A more traditional Garamond-based serif */
+.Palatino-font{
+	font-family: "Palatino Linotype", Palatino, Palladio, "URW Palladio L", "Book Antiqua", Baskerville, "Bookman Old Style", "Bitstream Charter", "Nimbus Roman No9 L", Garamond, "Apple Garamond", "ITC Garamond Narrow", "New Century Schoolbook", "Century Schoolbook", "Century Schoolbook L", Georgia, serif;
+}
+/*The Helvetica/Arial-based sans serif */
+.Frutiger-font{
+	font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+/*The Verdana-based sans serif */
+.Corbel-font{
+	font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+}
+/*The Trebuchet-based sans serif */
+.Segoe-font{
+	font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+}
+/*The heavier “Impact” sans serif */
+.Impact-font{
+	font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans-serif;
+}
+/*The monospace */
+.Consolas-font{
+	font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+
+
+

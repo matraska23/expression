@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Develop console</title>
+	<link rel="stylesheet" type="text/css" href="console.css"/>
+	
+</head>
+<body>
+	<div class="devcon_wrap">
+		<div id="devcon-wrap">
+			<table id="devcon-tab">
+				<tbody>
+					<tr>
+						<td>
+							<textarea class="devcon-text-box" id="devcon-expression-textbox" autofocus ></textarea>
+							<div class="devcon_btn-wrap">
+								<span class="devcon_help-btn devcon-btn" id="devcon-help-btn">Help</span>
+								<span class="devcon-btn devcon_center-help" id="devcon-eval-btn">Evaluate</span> <span class="devcon_center-help devcon_hotkey_label">Enter</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="devcon-tab-ribbon-cell">
+							<div class="scroll-wrap">
+								<div class="scroll-node" id="devcon-res">
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="devcon_help_wrap" id="devcon-help" style="/*display:none;*/">
+			<div class="devcon_icn_close" id="devcon-help-close-btn"></div>
+			<div class="devcon_help_container">
+			<div class="devcon_help_container_inner">
+				<p class="devcon-liter1">Вы находитесь в разделе описания консоли прототипа скриптового движка.</p>
+				<p class="devcon-liter1">Что бы вернуться к консоли, нажмите на крестик в верхнем правом углу экрана</p>
+				<h3>Консоль прототипа скриптового движка.</h3>
+				<p class="devcon-liter1">Expression v 42</p>
+				<p class="devcon-liter1">Реализован на js. Поддерживает возможность реализации функций на js. Готовую библиотеку можно использовать как вычислительное ядро для более сложных программных систем, таких как редактор формул в табличном процессоре на подобии Google SpreedSheet.</p>
+				<h4>Алгебраические выражения</h4>
+				<p class="devcon-liter1">Поддерживаются такие операторы, как: +, -, *, ^(возведение в степень), % (целочисленное деление), &&, ==, >=, <=, >, <, !=, ||. А так же тернарный оператор.</p>
+				<p class="devcon-liter1">Пример: <span class="devcon_code">13 + (5 - (12+2)^2)</span></p>
+				<h4>Константы и преопределенные функции</h4>
+				<p class="devcon-liter1">Константы: pi, e, true, false, null</p>
+				<p class="devcon-liter1">Функции: sin(x), cos(x), tan(x), log(x), min(x, y), max(x, y), length(x), not(x), call([args], var(x, y))</p>
+				<p class="devcon-liter1">Функция not - Логическое отрицание</p>
+				<p class="devcon-liter1">Функция var(name, value) - создание переменной name со значением value</p>
+				<p class="devcon-liter1">Функция call - рекурсивный вызов текущей функции или лямбды</p>
+				<p class="devcon-liter1">Пример расчета n-го числа Фибоначи</p>
+				<p class="devcon-liter1"><span class="devcon_code">var('b', 15)</span></p>
+				<p class="devcon-liter1"><span class="devcon_code">{n | n<3 ? 1 : call(n-1) + call(n-2)}(b)</span></p>
+				<p class="devcon-liter1">Функция call здесь ссылается на лямбду</p>
+				<h4>Лямбда функции</h4>
+				<p class="devcon-liter1">Имеют следующий синтаксис <span class="devcon_code">{n|n * (n > 1 ? call(n-1) : 1)}(b)</span></p>
+				<p class="devcon-liter1">До вертикальной черты (|) через запятую перечисляются аргументы, после возвращаемое значение. Результатом может быть другая лямбда.</p>
+				<p class="devcon-liter1">Аргументы функций и лямбд обладают ленивостью, то есть значение аргумента будет вычислено в момент обращения к нему внутри тела функции</p>
+				<p></p>
+				<h4>Синтаксический сахар:</h4>
+				<p class="devcon-liter1">По аналогии с javascript, функции и лямбды как переменные <span class="devcon_code">(12>4 ? min : max)(13,17)</span></p>
+				<p class="devcon-liter1">Из Haskell был заимствован оператор $ для скрытия закрывающих скобок:</p>
+				<p class="devcon-liter1"><span class="devcon_code">13 + $ -12 + 6 + min $ 10, 12</span> соответствует <span class="devcon_code">13 + ( -12 + 6 + min(10, 12))</span></p>
+				<p class="devcon-liter1">Чтобы избежать необходимость закрытия парных кавычек в литерных константах, был реализован дополнительны синтаксис. <span class="devcon_code">@abc</span> соответсвует строчной константе <span class="devcon_code">"abc"</span>. Поэтому допускается создание переменных таким образом <span class="devcon_code">var(@abc, "Hello world!")</span></p>
+			</div>
+			</div>
+		</div>
+	</div>
+	<script src="../expression.js"></script>
+	<script src="$4.js"></script>
+	<script src="console.js"></script>
+</body>
+</html>

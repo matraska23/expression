@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<script src="../js/arifmethic.js"></script>
+</head>
+<body>
+<script>
+
+var ev = new Parser("2*x+3*(x+y)^2");
+ev.setVariable("x", "2");
+ev.setVariable("y", "3");
+var res = ev.evaluate();
+console.log("RES: %s",res);		
+
+
+
+var fun2 = new Parser("min(-10,10)");
+console.log("RES2: %s",fun2.evaluate());					
+			
+var fun3 = new Parser("incr(9)");
+console.log("RES3: %s",fun3.evaluate());					
+
+
+
+
+
+</script>
+</body>
+</html>
