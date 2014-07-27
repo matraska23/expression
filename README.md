@@ -6,6 +6,10 @@ simple interpretator of math expressions on javascript
 ### Интерпретатор математический выражений expression
 Реализован на javascript с поддержкой возможности реализации функций на javascript.
 
+### Демо
+- [консоль](http://matraska23.github.io/expression/console/console.html)
+- [табличный процессор](http://matraska23.github.io/expression/tables/tables.html)
+
 ### Алгебраические выражения
 Поддерживаются такие операторы, как: +, -, *, ^(возведение в степень), % (целочисленное деление), &&, ==, >=, <=, >, <, !=, ||. А так же тернарный оператор.
 > Пример: `13 + (5 - (12+2)^2)`
